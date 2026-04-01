@@ -1,0 +1,38 @@
+#include <iostream>
+using namespace std;
+const int MAXA = 1000001;
+int A[MAXA];
+long long freq[MAXA] = {0};      
+long long freq_sum[MAXA] = {0};  
+long long prefix[MAXA] = {0};
+int main() {
+     ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    int N;
+    cin >> N;
+    for(int i = 0; i < N; i++) {
+         if(A[i] >= 0 && A[i] < MAXA) {
+        cin >> A[i];
+        freq[A[i]]++;}
+    }
+    for(int i = 1; i < MAXA; i++) {
+        if(freq[i] != 0) {
+            freq_sum[freq[i]] += (long long)i * freq[i];
+        }
+    }
+    for(int i = 1; i <= N; i++) {
+        prefix[i] = prefix[i-1] + freq_sum[i];
+    }
+    int Q, l, r;
+    cin >> Q;
+    while(Q--) {
+        cin >> l >> r;
+        if(l > N) {
+            cout << 0 << '\n';
+        } else {
+            if(r > N && l>0) r = N;
+            cout << prefix[r] - prefix[l-1] << '\n';
+        }
+    }
+    return 0;
+}
